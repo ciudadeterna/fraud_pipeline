@@ -1,0 +1,38 @@
+name: Monthly Retrain and Deploy
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # Corre el día 1 de cada mes a medianoche UTC
+  workflow_dispatch:     # Permite dispararlo manualmente
+
+jobs:
+  retrain:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install mlflow
+
+    - name: Simulate data drift
+      run: python simulate_monthly_data.py
+
+    - name: Retrain model
+      run: python train.py
+
+    - name: Commit and push updated model
+      run: |
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+        git add fraud_model.pkl creditcard_sample.csv
+        git commit -m "Monthly retrain with simulated drift"
+        git push
