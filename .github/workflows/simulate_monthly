@@ -10,3 +10,4 @@ df['V2'] += np.random.normal(0.05, 0.01, len(df))
 df['V3'] += np.random.normal(0.05, 0.01, len(df))
 
 df.to_csv('creditcard_sample.csv', index=False)
+
