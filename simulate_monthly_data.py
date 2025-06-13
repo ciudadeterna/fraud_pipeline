@@ -3,7 +3,7 @@ import numpy as np
 
 df = pd.read_csv('creditcard_sample.csv')
 
-# Simula drift: añade ruido pequeño a columnas clave
+
 drift_factor = np.random.normal(1.01, 0.01)
 df['Amount'] *= drift_factor
 df['V1'] += np.random.normal(0.05, 0.01, len(df))
